@@ -48,9 +48,19 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
-int		ft_parse(char *line, char **envp);
+int		ft_exec_path(char *line, char **args, char **envp);
+char 	**get_bin(char ***args, char **envp);
+int		ft_env(char *line, char **args, char **envp);
+int		ft_dispatch(char *line, char **envp);
+int		ft_parse(char *line, char ***args, char **envp);
 int		ft_pwd(char *line, char **args, char **envp);
 int		ft_echo(char *line, char **args, char **envp);
 char	*get_current_path(char *envp[]);
 int		ft_exec(char *line, char **args, char **envp);
+int		ft_exit(char *line, char **args, char **envp);
+int		relative_or_absolute(char *line);
+int		ft_ls(char *line, char **args, char **envp);
+int		ft_whereis(char *line, char **args, char **envp);
+int	ft_path(char *line,char **args, char **envp);
+int	ft_clear(char *line, char **args, char **envp);
 #endif

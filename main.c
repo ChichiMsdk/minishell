@@ -39,12 +39,26 @@ char	*get_path(char *envp[])
 
 void	*str_san(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] == ' ')
-		str++;
 	return (str);
+}
+
+int	ft_exec_path(char *line, char **args, char **envp)
+{
+	char	*path;
+
+	if (line[0] == '\0')
+		return (1);
+	if (strcmp(line, "exit") == 0)
+		return (ft_exit(line, args, envp));
+	else if (strcmp(line, "echo") == 0)
+		return (ft_echo(line, args, envp));
+	else if (strcmp(line, "env") == 0)
+		ft_env(line, args, envp);
+	else if (strcmp(line, "pwd") == 0)
+		return (ft_pwd(line, args, envp));
+	else
+		printf("Command not found: %s\n", line);
+	return (1);
 }
 
 int	ft_exec(char *line, char **args, char **envp)
@@ -54,35 +68,26 @@ int	ft_exec(char *line, char **args, char **envp)
 	if (line[0] == '\0')
 		return (1);
 	if (strcmp(line, "exit") == 0)
-		return (0);
+		return (ft_exit(line, args, envp));
 	else if (strcmp(line, "echo") == 0)
-		ft_echo(line, args, envp);
+		return (ft_echo(line, args, envp));
+	else if (strcmp(line, "env") == 0)
+		ft_env(line, args, envp);
+	else if (strcmp(line, "/usr/bin/pwd") == 0)
+		return (ft_pwd(line, args, envp));
+	else if (strcmp(line, "whereis") == 0)
+		return (ft_whereis(line, args, envp));
 	else if (strcmp(line, "pwd") == 0)
-		ft_pwd(line, args, envp);
+		return (ft_pwd(line, args, envp));
 	else
 		printf("Command not found: %s\n", line);
 	return (1);
 }
 
-int	ft_parse(char *line, char **envp)
+void	freeFOU(char **args, char **clean)
 {
-	char	**args;
-	int		i;
-	int		j;
+	int	i;
 
-	j = 0;
-	i = 0;
-	args = ft_split(line, ' ');
-	if (!args)
-		return (0);
-	if (!args[0])
-	{
-		free(args);
-		return (1);
-	}
-	while (args[i])
-		i++;
-	j = ft_exec(args[0], args, envp);
 	i = 0;
 	while (args[i])
 	{
@@ -90,7 +95,40 @@ int	ft_parse(char *line, char **envp)
 		i++;
 	}
 	free(args);
-	return (j);
+	i = 0;
+	if (!clean)
+		return ;
+	while (clean[i])
+	{
+		free(clean[i]);
+		i++;
+	}
+	free(clean);
+}
+
+int	ft_dispatch(char *line, char **envp)
+{
+	char	**args;
+	char	**clean;
+	int		signal;
+
+	clean = NULL;
+	args = NULL;
+	signal = ft_parse(line, &args, envp);
+	if (signal)
+	{
+		freeFOU(args, clean);
+		return (1);
+	}
+	if (relative_or_absolute(args[0]))
+	{
+		signal = ft_exec(args[0], args , envp);
+		int j = 0;
+	}
+	else 
+		signal = ft_exec(args[0], args, envp);
+	freeFOU(args, clean);
+	return (signal);
 }
 
 int	main(int argc, char **argv, char *envp[])
@@ -109,7 +147,7 @@ int	main(int argc, char **argv, char *envp[])
 		prompt = "minishell>";
 		line = readline(prompt);
 		buffer = str_san(line);
-		if (!ft_parse(buffer, envp))
+		if (!ft_dispatch(buffer, envp))
 			break ;
 		add_history(line);
 		free(line);

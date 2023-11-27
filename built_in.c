@@ -12,12 +12,140 @@
 
 #include "minishell.h"
 
+int	ft_clear(char *line, char **args, char **envp)
+{
+	pid_t	pid;
+	char	*path;
+	int		status;
+
+	path = line;
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("clear failed to fork");
+		free(line);
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = "/bin/clear";
+		execve(path, args, envp);
+		printf("clear failed to execve\n");
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status))
+		{
+			printf("clear exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+	return (1);
+}
+
+int	ft_ls(char *line, char **args, char **envp)
+{
+	pid_t	pid;
+	char	*path;
+	int		status;
+
+	path = line;
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("ls failed to fork");
+		free(line);
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = "/bin/ls";
+		execve(path, args, envp);
+		printf("ls failed to execve\n");
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status))
+		{
+			printf("ls exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+	return (1);
+}
+
+int	ft_whereis(char *line, char **args, char **envp)
+{
+	pid_t	pid;
+	char	*path;
+	int		status;
+
+	path = line;
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("whereis failed to fork");
+		free(line);
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = "/bin/whereis";
+		execve(path, args, envp);
+		printf("whereis failed to execve\n");
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status))
+		{
+			printf("whereis exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+	return (1);
+}
+int	ft_exit(char *line, char **args, char **envp)
+{
+	pid_t	pid;
+	char	*path;
+	int		status;
+
+	path = line;
+	/*
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("exit failed to fork");
+		free(line);
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = "/bin/exit";
+		execve(path, args, envp);
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status))
+		{
+			printf("exit exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+		*/
+	return (0);
+}
 int	ft_pwd(char *line, char **args, char **envp)
 {
 	pid_t	pid;
 	char	*path;
 	int		status;
 
+	path = line;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -43,12 +171,45 @@ int	ft_pwd(char *line, char **args, char **envp)
 	return (1);
 }
 
+int	ft_env(char *line, char **args, char **envp)
+{
+	pid_t	pid;
+	char	*path;
+	int		status;
+
+	path = line;
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("env failed to fork");
+		free(line);
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = "/bin/env";
+		execve(path, args, envp);
+		printf("env failed to execve\n");
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status))
+		{
+			printf("env exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+	return (1);
+}
+
 int	ft_echo(char *line, char **args, char **envp)
 {
 	pid_t	pid;
 	char	*path;
 	int		status;
 
+	path = line;
 	pid = fork();
 	if (pid == -1)
 	{
