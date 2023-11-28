@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-int	ft_parse(char *line, char ***args,  char **envp)
+int	ft_parse(char *line, char ***args, char **envp)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	*args = ft_split(line, ' ');
@@ -39,7 +39,7 @@ int	relative_or_absolute(char *line)
 	return (0);
 }
 
-char **get_bin(char ***args, char **envp)
+char	**get_bin(char ***args, char **envp)
 {
 	char	**clean;
 	int		i;

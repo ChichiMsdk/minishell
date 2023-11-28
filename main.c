@@ -42,25 +42,6 @@ void	*str_san(char *str)
 	return (str);
 }
 
-int	ft_exec_path(char *line, char **args, char **envp)
-{
-	char	*path;
-
-	if (line[0] == '\0')
-		return (1);
-	if (strcmp(line, "exit") == 0)
-		return (ft_exit(line, args, envp));
-	else if (strcmp(line, "echo") == 0)
-		return (ft_echo(line, args, envp));
-	else if (strcmp(line, "env") == 0)
-		ft_env(line, args, envp);
-	else if (strcmp(line, "pwd") == 0)
-		return (ft_pwd(line, args, envp));
-	else
-		printf("Command not found: %s\n", line);
-	return (1);
-}
-
 int	ft_exec(char *line, char **args, char **envp)
 {
 	char	*path;
@@ -69,6 +50,8 @@ int	ft_exec(char *line, char **args, char **envp)
 		return (1);
 	if (strcmp(line, "exit") == 0)
 		return (ft_exit(line, args, envp));
+	else if (strcmp(line, "clear") == 0)
+		return (ft_clear(line, args, envp));
 	else if (strcmp(line, "echo") == 0)
 		return (ft_echo(line, args, envp));
 	else if (strcmp(line, "env") == 0)
@@ -111,6 +94,7 @@ int	ft_dispatch(char *line, char **envp)
 	char	**args;
 	char	**clean;
 	int		signal;
+	int		j;
 
 	clean = NULL;
 	args = NULL;
@@ -122,10 +106,10 @@ int	ft_dispatch(char *line, char **envp)
 	}
 	if (relative_or_absolute(args[0]))
 	{
-		signal = ft_exec(args[0], args , envp);
-		int j = 0;
+		signal = ft_exec(args[0], args, envp);
+		j = 0;
 	}
-	else 
+	else
 		signal = ft_exec(args[0], args, envp);
 	freeFOU(args, clean);
 	return (signal);

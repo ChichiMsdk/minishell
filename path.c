@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_path(char *line,char **args, char **envp)
+int	ft_path(char *line, char **args, char **envp)
 {
 	pid_t	pid;
 	char	*path;
